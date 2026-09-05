@@ -46,13 +46,10 @@ jobs:
           ls -laR bin/packages/${{ env.EFFECTIVE_ARCH }}/packages_ci
           tar -zcvf ${{ env.ARCH }}.tar.gz -C bin/packages/${{ env.EFFECTIVE_ARCH }}/ packages_ci
 
-      - name: Upload packages
-        uses: ncipollo/release-action@v1
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
         with:
           name: luci-app-mosdns-${{ env.ARCH }}
-          tagName: luci-app-mosdns-${{ env.ARCH }}
-          token: ${{ secrets.GITHUB_TOKEN }}
-          allowUpdates: true
-          replacesArtifacts: true
-          prerelease: false
-          artifacts: "${{ env.ARCH }}.tar.gz"
+          path: ${{ env.ARCH }}.tar.gz
+          if-no-files-found: error
+          retention-days: 30
